@@ -7,7 +7,7 @@ UNI_REPO=https://github.com/alelievr/libft-unit-test
 TRI_REPO=https://github.com/Tripouille/libftTester
 WAR_REPO=https://github.com/y3ll0w42/libft-war-machine.git
 
-while getopts 'atwur:' flag
+while getopts 'hatwur:' flag
 do
 	case "${flag}" in
 		a) F_ALL="1";;
@@ -15,15 +15,27 @@ do
 		w) F_WAR="1";;
 		u) F_UNI="1";;
 		r) F_REPO="$OPTARG";;
-		h) echo "help";;
+		h)
+			echo "help"
+			echo "Usage flags:"
+			echo "	-r your_repo"
+			echo "	-a all tests"
+			echo "	-w war test"
+			echo "	-u uni test"
+			echo "	-t tri test"
+			exit
+			;;
 	esac
 done
-echo "all=$F_ALL,tri=$F_TRI,uni=$F_UNI,war=$F_WAR,F_REPO=$F_REPO"
 
 rm -rf tester_libft results
 mkdir tester_libft results
 cd tester_libft
-git clone $F_REPO libft || exit 
+git clone $F_REPO libft
+if [[ $? != 0 ]]
+then
+	exit
+fi
 
 if [[ $F_ALL == 1 ]]
 then
